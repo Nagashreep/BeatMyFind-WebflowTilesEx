@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE tiles-definitions PUBLIC  
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+   <definition name="defaultQueryTemplate" template="/WEB-INF/views/queryTemplate.jsp">
+			<put-attribute name="title" value="Beat My Find" />
+			<put-attribute name="header" value="/WEB-INF/views/header.jsp" />
+			<put-attribute name="sideNav" value="" />
+			<put-attribute name="body" value="" />
+			<put-attribute name="footer" value="" />
+	</definition>
+	
+	<definition name="login" template="/WEB-INF/views/login.jsp">
+	</definition>
+	
+	<definition name="querySummary" extends="defaultQueryTemplate">
+		<put-attribute name="sideNav" value="/WEB-INF/views/queryNavigation.jsp" />
+	    <put-attribute name="body" value="/WEB-INF/views/querySummary.jsp" />
+	</definition>
+	
+	<definition name="queryDetails" extends="defaultQueryTemplate">
+		<put-attribute name="sideNav" value="/WEB-INF/views/queryNavigation.jsp" />
+	    <put-attribute name="body" value="/WEB-INF/views/queryDetails.jsp" />
+	</definition>
+	
+	<!-- <definition name="welcome" extends="DefaultTemplate">
+	    <put-attribute name="body" value="/WEB-INF/welcome/welcomeHome.jsp" />
+	</definition> -->
+	
+</tiles-definitions>

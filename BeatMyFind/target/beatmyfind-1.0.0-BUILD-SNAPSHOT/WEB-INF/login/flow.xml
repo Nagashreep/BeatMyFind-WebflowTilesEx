@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="user" class="com.srishtisiri.beatmyfind.model.User"/>
+	
+	<view-state id="loginScreen" view="login" model="user">
+		<transition on="submit_newCustomer" to="fetchOpenQueries">
+			<evaluate expression="userDetailsAction.saveUser(user)" result="flowScope.user"></evaluate>
+		</transition>
+		<transition on="submit_existingCustomer" to="fetchOpenQueries">
+			<evaluate expression="userDetailsAction.authenticateAndSetUser(user)" result="flowScope.user"></evaluate>
+		</transition>
+	</view-state>
+	
+	<!-- <action-state id="saveUser">
+    	<evaluate expression="userDetailsAction.saveUser(user,flowRequestContext)" result="flowScope.user"></evaluate>
+		<transition on="success" to="fetchSummary"></transition>
+	</action-state> -->
+	
+	<view-state id="fetchOpenQueries" view="querySummary" model="querySummary">
+		<on-entry>
+			<evaluate expression="querySummaryAction.fetchOpenQueries()" result="flowScope.querySummary"></evaluate>
+		</on-entry>
+	</view-state>
+	
+	<view-state id="fetchClosedQueries" view="querySummary" model="querySummary">
+		<on-entry>
+			<evaluate expression="querySummaryAction.fetchClosedQueries()" result="flowScope.querySummary"></evaluate>
+		</on-entry>
+	</view-state>
+	
+	<view-state id="fetchExpiredQueries" view="querySummary" model="querySummary">
+		<on-entry>
+			<evaluate expression="querySummaryAction.fetchExpiredQueries()" result="flowScope.querySummary"></evaluate>
+		</on-entry>
+	</view-state>
+	
+	<view-state id="querySummaryScreen" view="querySummary" model="userQueries">
+		<transition on="submit" to="querySummary"></transition>
+	</view-state>
+	
+	<view-state id="fetchQueryDetails" view="queryDetails" model="querySummary">
+		<on-entry>
+			<set name="requestScope.queryId" value="requestParameters.queryId" />
+			<evaluate expression="queryDetailsAction.fetchQueryDetails()" result="viewScope.querySummary"></evaluate>
+		</on-entry>
+		<transition on="submit_newComment">
+			<evaluate expression="queryDetailsAction.addComment()"></evaluate>
+			<render fragments="body"></render>
+		</transition>
+	</view-state>
+	
+	
+	<global-transitions>
+		<transition on="fetchOpenQueries" to="fetchOpenQueries" />
+		<transition on="fetchClosedQueries" to="fetchClosedQueries" />
+		<transition on="fetchExpiredQueries" to="fetchExpiredQueries" />
+		<transition on="fetchQueryDetails" to="fetchQueryDetails" />
+	</global-transitions>
+
+</flow>
